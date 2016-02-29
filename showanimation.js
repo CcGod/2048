@@ -28,7 +28,7 @@ function showMoveAnimation(fromx,fromy,tox,toy,merge){
 	 	top:getPosTop(tox,toy),
 	 	left:getPosLeft(tox,toy)
 	 },{
-	 	duration:370,
+	 	duration:270,
 	 	queue:true,
 	 	start:function(){
 	 		numberCell.parent().append(cloneCell);
@@ -50,7 +50,7 @@ function showMoveAnimation(fromx,fromy,tox,toy,merge){
 	 				left:"-="+cellSpace/2,
 	 				width:"+="+cellSpace,
 	 				height:"+="+cellSpace
-	 			},170).animate({
+	 			},130).animate({
 	 				top:"+="+cellSpace/2,
 	 				left:"+="+cellSpace/2,
 	 				width:"-="+cellSpace,
