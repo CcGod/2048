@@ -12,9 +12,19 @@
 </head>
 <body>
 	<header>
-		<h1>2048</h1>
+		<h1 id="logo">2048</h1>
 		<a href="javascript:newgame();" id="newgameButton">New Game</a>
-		<p>score:<span id="score">0</span></p>
+		<div id="scoringBox">
+			<div id="bestContainer">BEST
+				<p id="bestScoring">
+					<span id="bestrecord"></span>
+					 / 
+					<span id="bestscore"></span>
+				</p>
+			</div>
+			<div id="partition"></div>
+			<div id="scoreContainer">SCORE<p id="score"></p></div>
+		</div>
 	</header>
 	<div id="grid-container">
 		<span class="grid-cell" id="grid-cell-0-0"></span>

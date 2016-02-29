@@ -1,4 +1,5 @@
 var screenWidth = window.screen.availWidth,
+	screenHeight = window.screen.availHeight,
 	gridContainerWidth = 0.92*screenWidth,
 	cellSideLength = 0.18*screenWidth,
 	cellSpace = 0.04*screenWidth;
@@ -122,6 +123,24 @@ function _noBarrier(row,start,end,arr){
 function noMove(board){
 	if(canMoveLeft(board)||canMoveUp(board)||canMoveRight(board)||canMoveDown(board)){
 		return false;
+	}
+	return true;
+}
+
+function boardClear(arr){
+	for (var i = 0; i < 4; i++) {
+		for (var j = 0; j < 4; j++) {
+				arr[i][j] = 0;
+			}
+	}
+}
+
+function isEmpty(arr){
+	for (var i = 0; i < 4; i++) {
+		for (var j = 0; j < 4; j++) {
+				if(arr[i][j] != 0)
+					return false;	
+			}
 	}
 	return true;
 }

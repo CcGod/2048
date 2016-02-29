@@ -5,37 +5,32 @@ header{
 	text-align: center;
 }
 header h1{
-	margin-top:30px;
-	margin-bottom:15px;
+	margin:0;
 	font-size:70px;
 	font-weight:500;
-	color:#333;
+	color:rgb(0,128,128);
 }
 header a{
-	margin:0 auto;
+	float:left;
 	display:block;
 	width:140px;
 	height:40px;
 	text-decoration:none;
-	line-height: 40px;
 	color:#fff;
 	border-radius:5px;
 	background-color: rgb(0,204,204);
 }
 header #newgameButton:hover{
-	background-color: rgb(0,187,187);
+	background-color: rgb(0,156,156);
 	color:#ddd;
 }
-header p{
-	margin-top:15px;
-	margin-bottom:15px;
-	font-size:28px;
-	font-weight: 500;
+header #scoringBox{
+	float: right;
+	background-color: rgb(0,136,136);
+	color:#fff;
 }
-header span{
-	font-size:21px;
-}
-
+header #bestScoring{margin: 0;}
+header #score{margin: 0;}
 #grid-container{
 	position:relative;
 	margin:0 auto;
@@ -43,9 +38,7 @@ header span{
 	height:435px;
 	padding:20px;
 	background-color:rgba(102,153,153,.4);
-	/*background-color: #fff;*/
 	border:2px solid rgba(102,153,153,.9);
-	/*box-shadow:1px 1px 7px #aaa;*/
 	border-radius:11px;
 }
 .grid-cell{

@@ -1,5 +1,8 @@
-var board = new Array();
+var board = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var score = 0;
+var isgameover = false;
+var bestscore = 0;
+var bestrecord = 0;
 
 var startx = 0,
 	starty = 0,
@@ -7,8 +10,9 @@ var startx = 0,
 	endy = 0;
 
 $(document).ready(function(){
+
 	prepareForMobile();
-	newgame();
+	startGame();
 });
 
 function prepareForMobile(){
@@ -27,9 +31,71 @@ function prepareForMobile(){
 	$(".grid-cell").css("width",cellSideLength);
 	$(".grid-cell").css("height",cellSideLength);
 	$(".grid-cell").css("border-radius",0.03*cellSideLength);
+
+	$("header").css({
+		"position":"relative",
+		"width":gridContainerWidth,
+		"height":screenHeight*0.2
+	});
+	$("h1").css({
+		"marginTop":screenHeight*0.07+"px",
+		"width":gridContainerWidth/2,
+		"height":screenHeight*0.1,
+		"fontSize":screenHeight*0.09+"px",
+		"lineHeight":screenHeight*0.1+"px"
+	});
+	$("#newgameButton").css({
+		"marginTop":screenHeight*0.06*0.3+"px",
+		"marginLeft":gridContainerWidth*0.05+"px",
+		"width":gridContainerWidth/2.5,
+		"height":screenHeight*0.06,
+		"lineHeight":screenHeight*0.06+"px",
+		"fontSize":screenHeight*0.06*0.39+"px"
+	});
+	$("#scoringBox").css({
+		"position":"absolute",
+		"top":screenHeight*0.2*0.1,
+		"right":gridContainerWidth*0.05,
+		"width":gridContainerWidth*0.4,
+		"height":screenHeight*0.2*0.8,
+		"border-radius":gridContainerWidth*0.4*0.05,
+		"fontSize":screenHeight*0.08*0.4
+	});
+	$("#partition").css({
+		"margin-left":gridContainerWidth*0.4 *0.25,
+		"width":gridContainerWidth*0.4*0.5,
+		"border-bottom-width":screenHeight*0.2*0.8 *0.02,
+		"border-bottom-style":"solid",
+		"border-bottom-color":"#eee"
+	});	
+	$("#bestContainer").css({
+		"height":screenHeight*0.2*0.8 *0.49
+	});
+	$("#scoreContainer").css({
+		"height":screenHeight*0.2*0.8 *0.49
+	});
+	$("#bestScoring").css({
+		"font-size":screenHeight*0.2*0.8*0.49 *0.3
+	});
+	$("#score").css({
+		"font-size":screenHeight*0.2*0.8*0.49 *0.3
+	});
+}
+
+function startGame(){
+	recoverState();
+	console.log(board);
+	if(isgameover==true || isEmpty(board)){
+		newgame();
+		console.log("null");
+	}
+	init();
 }
 
 function newgame(){
+	boardClear(board);
+	//重置分数
+	score=0;
 	//初始化棋盘格
 	init();
 	//随机生成4、2
@@ -45,20 +111,14 @@ function init(){
 			gridCell.css("left",getPosLeft(i,j)+"px");
 		}
 	}
+	//重置gameover值
+	isgameover = false;
 
-	for (var i = 0; i < 4; i++) {
-		board[i]=new Array;
-		for (var j = 0; j < 4; j++) {
-			board[i][j]=0;
-		}	
-	}
-	//重置分数
-	score=0;
 	//重置布局
-	updateBoardView();
+	initBoardView();
 }
 
-function updateBoardView(){
+function initBoardView(){
 	$(".number-cell").remove();
 	//更新布局
 	for (var i = 0; i < 4; i++) {
@@ -84,9 +144,40 @@ function updateBoardView(){
 	}
 	//设置number-cell的行高，让数字居中显示
 	$(".number-cell").css("line-height",cellSideLength+"px");
+	//更新分数显示
+	$("#score").text(score);
+	$("#bestrecord").text(bestrecord);
+	$("#bestscore").text(bestscore);
+}
+
+function updateBoardView(){
+	for (var i = 0; i < 4; i++) {
+		for (var j = 0; j < 4; j++) {
+			var numberCell=$("#number-cell-"+i+"-"+j);
+
+			if(board[i][j]!=0){
+				numberCell.css({
+					"width":cellSideLength,
+					"height":cellSideLength,
+					"top":getPosTop(i,j),
+					"left":getPosLeft(i,j),
+					"color":getNumberCellColor(),
+					"backgroundColor":getNumberCellBackgroundColor(board[i][j]),	
+				});
+				numberCell.text(board[i][j]);
+			}else{
+				numberCell.css({
+					"width":0,
+					"height":0,
+					"top":getPosTop(i,j)+cellSideLength/2,
+					"left":getPosLeft(i,j)+cellSideLength/2,
+				});
+				numberCell.text("");
+			}
+		}
+	}
 	//更新分数
 	$("#score").text(score);
-	setTimeout("isGameOver()",20);
 }
 
 function generateOneNumber(){
@@ -104,12 +195,13 @@ function generateOneNumber(){
 		}
 	}
 	//随机生成一个数字
-	var randomNumber=parseInt(Math.floor(Math.random()*2+1))*2;
+	var randomNumber=Math.random()>0.77?4:2;
 	board[x][y]=randomNumber;
 	//在生成的位置上显示这个数字
 	// board[x][y]=randomNumber;
 	// $("#number-cell-"+x+"-"+y).text(randomNumber);
 	showNumberWithAnimation(x,y,randomNumber);
+	setTimeout("isGameOver()",270);
 	return true;
 }
 
@@ -118,25 +210,25 @@ $(document).keydown(function(event){
 		case 37://left
 			event.preventDefault();//阻止按键的默认效果	
 			if(moveLeft()){
-				setTimeout("generateOneNumber()",210);
+				setTimeout("generateOneNumber()",10);
 			}
 			break;
 		case 38://up
 			event.preventDefault();//阻止按键的默认效果	
 			if(moveUp()){
-				setTimeout("generateOneNumber()",210);
-				}
+				setTimeout("generateOneNumber()",10);
+			}
 			break;
 		case 39://right
 			event.preventDefault();//阻止按键的默认效果	
 			if(moveRight()){
-				setTimeout("generateOneNumber()",210);
+				setTimeout("generateOneNumber()",10);
 			}
 			break;
 		case 40://down
 			event.preventDefault();//阻止按键的默认效果	
 			if(moveDown()){
-				setTimeout("generateOneNumber()",210);
+				setTimeout("generateOneNumber()",10);
 			}
 			break;
 		default:break;
@@ -155,24 +247,24 @@ function moveLeft(){
 					//是否可以移到这个位置
 					if(board[i][k]==0&&noBarrier(i,j,k,board)){
 						//move
-						showMoveAnimation(i,j,i,k);
 						board[i][k]=board[i][j];
 						board[i][j]=0;
+						showMoveAnimation(i,j,i,k);
 						continue;
 					}else 
 					if(board[i][k]==board[i][j]&&noBarrier(i,j,k,board)){
 						//move
-						showMoveAnimation(i,j,i,k);
 						board[i][k]+=board[i][j];
 						score+=board[i][k];
 						board[i][j]=0;
+						updateBestScore(board[i][k],score);
+						showMoveAnimation(i,j,i,k,true);
 						moveLeft();
 					}
 				}
 			}
 		}
 	}
-	setTimeout("updateBoardView()",200);//直接更新布局会导致showMoveAnimation()函数终止，也就是说看不见动作变化，所以要延时200ms更新布局。
 	return true;
 }
 
@@ -185,23 +277,23 @@ function moveUp(){
 			if(board[j][i]!=0){
 				for(var k=0;k<j;k++){
 					if(board[k][i]==0&&_noBarrier(i,j,k,board)){
-						showMoveAnimation(j,i,k,i);
 						board[k][i]=board[j][i];
 						board[j][i]=0;
+						showMoveAnimation(j,i,k,i);
 						continue;
 					}else 
 					if(board[k][i]==board[j][i]&&_noBarrier(i,j,k,board)){
-						showMoveAnimation(j,i,k,i);
 						board[k][i]+=board[j][i];
 						score+=board[k][i];
 						board[j][i]=0;
+						updateBestScore(board[k][i],score);
+						showMoveAnimation(j,i,k,i,true);
 						moveUp();
 					}
 				}
 			}
 		}
 	}
-	setTimeout("updateBoardView()",200);
 	return true;
 }
 
@@ -217,24 +309,24 @@ function moveRight(){
 					//是否可以移到这个位置
 					if(board[i][k]==0&&noBarrier(i,j,k,board)){
 						//move
-						showMoveAnimation(i,j,i,k);
 						board[i][k]=board[i][j];
 						board[i][j]=0;
+						showMoveAnimation(i,j,i,k);
 						continue;
 					}else 
 					if(board[i][k]==board[i][j]&&noBarrier(i,j,k,board)){
 						//move
-						showMoveAnimation(i,j,i,k);
 						board[i][k]+=board[i][j];
 						score+=board[i][k];
 						board[i][j]=0;
+						updateBestScore(board[i][k],score);
+						showMoveAnimation(i,j,i,k,true);
 						moveRight();
 					}
 				}
 			}
 		}
 	}
-	setTimeout("updateBoardView()",200);
 	return true;
 }
 
@@ -247,23 +339,23 @@ function moveDown(){
 			if(board[j][i]!=0){
 				for(var k=3;k>j;k--){
 					if(board[k][i]==0&&_noBarrier(i,j,k,board)){
-						showMoveAnimation(j,i,k,i);
 						board[k][i]=board[j][i];
 						board[j][i]=0;
+						showMoveAnimation(j,i,k,i);
 						continue;
 					}else 
 					if(board[k][i]==board[j][i]&&_noBarrier(i,j,k,board)){
-						showMoveAnimation(j,i,k,i);
 						board[k][i]+=board[j][i];
 						score+=board[k][i];
 						board[j][i]=0;
+						updateBestScore(board[k][i],score);
+						showMoveAnimation(j,i,k,i,true);
 						moveDown();
 					}
 				}
 			}
 		}
 	}
-	setTimeout("updateBoardView()",200);
 	return true;
 }
 
@@ -273,45 +365,99 @@ function isGameOver(){
 	}
 }
 
-function gameOver(){
-	var wWidth = document.documentElement.clientWidth,
-		wHeight= document.documentElement.clientHeight, 
-		cover = document.createElement("div"),
-	    over  = document.createElement("div");
-
-	document.body.appendChild(cover);
-	document.body.appendChild(over);
-
-	cover.id = "cover";
-	over.id = "gameover";
-	over.style.width="435px";
-	over.style.height="436px";
-	over.style.lineHeight = over.offsetHeight+"px";
-	
-	if(over.textContent){
-        over.textContent = "Game Over !";
-    }else{
-       over.innerText = "Game Over !";
-    }
-
-	over.style.left=(wWidth - over.offsetWidth)/2+"px";
-	over.style.top =(wHeight - over.offsetHeight)/2+"px";
-
-	over.onclick = function(){
-		document.body.removeChild(cover);
-		document.body.removeChild(over);
-	 }
-	cover.onclick = function(){
-		document.body.removeChild(cover);
-		document.body.removeChild(over);
-	 }
-
-	window.onresize=function(){
-		document.body.removeChild(cover);
-	    document.body.removeChild(over);
-		gameOver();
+//更新best内容
+function updateBestScore(record,score){
+	if(record > bestrecord){
+		bestrecord = record;
+		$("#bestrecord").text(bestrecord);
 	}
-	// alert("Game Over!");
+	if(score > bestscore){
+		bestscore = score;
+		$("#bestscore").text(bestscore);
+	}
+}
+
+//保存游戏进度
+function saveState(){
+	var state = {
+		"board":board,
+		"score":score,
+		"bestrecord":bestrecord,
+		"bestscore":bestscore,
+		"isgameover":isgameover
+	}
+	localStorage.setItem('gameState',JSON.stringify(state));
+}
+
+//恢复游戏数据
+function recoverState(){
+	var state = localStorage.getItem("gameState");
+
+	try{
+		if (state) {
+			state = JSON.parse(state);
+			if(state.isgameover  == false){//如果上一次离开游戏时还没结束
+				for(var i=0;i<4;i++){
+					for(var j=0;j<4;j++){
+						board[i][j] = state.board[i][j];
+					}
+				}
+			}
+			score = state.score;
+			bestrecord = state.bestrecord;
+			bestscore = state.bestscore;
+		}
+	}catch(event){
+		boardClear(board);
+		score = 0;
+		bestscore = 0;
+		bestrecord = 0;
+	}
+}
+
+function gameOver(){
+
+	if (!isgameover) {
+		var wWidth = document.documentElement.clientWidth,
+			wHeight= document.documentElement.clientHeight, 
+			cover = document.createElement("div"),
+		    over  = document.createElement("div");
+
+		document.body.appendChild(cover);
+		document.body.appendChild(over);
+
+		cover.id = "cover";
+		over.id = "gameover";
+		over.style.width="435px";
+		over.style.height="436px";
+		over.style.lineHeight = over.offsetHeight+"px";
+		
+		if(over.textContent){
+	        over.textContent = "Game Over !";
+	    }else{
+	       over.innerText = "Game Over !";
+	    }
+
+		over.style.left=(wWidth - over.offsetWidth)/2+"px";
+		over.style.top =(wHeight - over.offsetHeight)/2+"px";
+
+		isgameover = true;
+
+		over.onclick = function(){
+			document.body.removeChild(cover);
+			document.body.removeChild(over);
+		 }
+		cover.onclick = function(){
+			document.body.removeChild(cover);
+			document.body.removeChild(over);
+		 }
+		window.onresize=function(){
+			document.body.removeChild(cover);
+		    document.body.removeChild(over);
+		    isgameover = false;
+			gameOver();
+		}
+	}		
 }
 
 //移动端触控
@@ -356,4 +502,8 @@ document.addEventListener("touchend",function (event){
 			}
 		}
 	}
+});
+
+$(window).unload(function(){
+	saveState();
 });
