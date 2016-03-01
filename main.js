@@ -210,7 +210,7 @@ function generateOneNumber(){
 	// board[x][y]=randomNumber;
 	// $("#number-cell-"+x+"-"+y).text(randomNumber);
 	showNumberWithAnimation(x,y,randomNumber);
-	setTimeout("isGameOver()",270);
+	setTimeout("isGameOver()",210);
 	return true;
 }
 
