@@ -12,8 +12,12 @@ var startx = 0,
 $(document).ready(function(){
 
 	prepareForMobile();
+	if (isOpenByMM()) {
+		alert(screenWidth);
+		alert(screenHeight);
+	}
 	startGame();
-	getBrowserIfo();
+	// getBrowserIfo();
 });
 
 function prepareForMobile(){
