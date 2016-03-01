@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 	prepareForMobile();
 	if (isOpenByMM()) {
-		$("#test01").text("正在使用X5内核打开！");
+		$("#test01").text(screenWidth+"-------------"+screenHeight);
 	}
 	startGame();
 	getBrowserIfo();
