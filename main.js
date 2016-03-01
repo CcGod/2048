@@ -15,6 +15,9 @@ $(document).ready(function(){
 		$("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight+"-------------"+document.body.offsetWidth+"-------------"+document.body.offsetHeight);
 		screenWidth = document.body.clientWidth;
 		screenHeight = document.body.clientHeight;
+		gridContainerWidth = 0.92*screenWidth;
+		cellSideLength = 0.18*screenWidth;
+		cellSpace = 0.04*screenWidth;
 	}
 	prepareForMobile();
 	startGame();
