@@ -16,7 +16,7 @@ $(document).ready(function(){
 		$("#test01").text("正在使用X5内核打开！");
 	}
 	startGame();
-	// getBrowserIfo();
+	getBrowserIfo();
 });
 
 function prepareForMobile(){
