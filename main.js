@@ -13,7 +13,7 @@ $(document).ready(function(){
 
 	prepareForMobile();
 	if (isOpenByMM()) {
-		$("#test01").text(screenWidth+"-------------"+screenHeight);
+		$("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight);
 	}
 	startGame();
 	getBrowserIfo();
