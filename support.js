@@ -186,7 +186,7 @@ function getBrowserIfo(){
 	console.log(NV.name);
 	console.log(NV.version);
 	console.log(NV.shell);
-	$("#browserIfo").text(UA+"-----"+NV.name+"-----"+NV.version+"-----"+NV.shell);
+	// $("#browserIfo").text(UA+"-----"+NV.name+"-----"+NV.version+"-----"+NV.shell);
 }
 
 //判断是否是在微信中打开

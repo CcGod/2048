@@ -12,7 +12,7 @@ var startx = 0,
 $(document).ready(function(){
 
 	if (isOpenByMM()) {
-		$("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight+"-------------"+document.body.offsetWidth+"-------------"+document.body.offsetHeight);
+		// $("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight+"-------------"+document.body.offsetWidth+"-------------"+document.body.offsetHeight);
 		screenWidth = document.body.clientWidth;
 		screenHeight = document.body.clientHeight;
 		gridContainerWidth = 0.92*screenWidth;
