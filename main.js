@@ -14,8 +14,8 @@ $(document).ready(function(){
 	prepareForMobile();
 	if (isOpenByMM()) {
 		// $("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight);
-		screenWidth = document.documentElement.clientWidth;
-		screenHeight = document.documentElement.clientHeight;
+		screenWidth = document.body.clientWidth;
+		screenHeight = document.body.clientHeight;
 	}
 	startGame();
 	// getBrowserIfo();
