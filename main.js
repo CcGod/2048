@@ -11,12 +11,12 @@ var startx = 0,
 
 $(document).ready(function(){
 
-	prepareForMobile();
 	if (isOpenByMM()) {
-		$("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight);
+		$("#test01").text(screenWidth+"-------------"+screenHeight+"-------------"+document.body.clientWidth+"-------------"+document.body.clientHeight+"-------------"+document.body.offsetWidth+"-------------"+document.body.offsetHeight);
 		screenWidth = document.body.clientWidth;
 		screenHeight = document.body.clientHeight;
 	}
+	prepareForMobile();
 	startGame();
 	// getBrowserIfo();
 });
